@@ -1,0 +1,22 @@
+---
+description: Deploy via GitHub Pages — projeto deve permanecer estático
+alwaysApply: true
+---
+
+# GitHub Pages — Página estática
+
+Este projeto é publicado no **GitHub Pages**. Toda alteração deve manter o site como **página estática**.
+
+## Regras
+
+- **Sem backend**: não usar servidores, APIs próprias, SSR ou banco de dados. Apenas arquivos estáticos (HTML, CSS, JS, imagens).
+- **Sem build obrigatório**: preferir HTML/CSS/JS vanilla. Se houver build (ex.: bundler), a saída deve ser estática e servir na raiz ou em pasta configurada no GitHub Pages.
+- **Caminhos relativos**: usar caminhos relativos para assets (ex.: `imagem/bandeira.png`) para funcionar em `https://usuario.github.io/repo/`.
+- **Base URL**: se o repo não for um site de usuário/organização, o site fica em `/<repo>/`. Evitar links que assumam raiz em `/` quando o projeto estiver em subpath.
+- **Branch/publicação**: o GitHub Pages pode publicar a partir da branch `main` (ou `gh-pages`) ou da pasta `/docs`. Manter a estrutura compatível com a opção escolhida no repositório.
+
+## Estrutura esperada
+
+- Raiz do repositório (ou pasta de publish) com `index.html` como entrada.
+- Assets em subpastas (ex.: `imagem/`, `css/`, `js/`).
+- Nenhum arquivo sensível (chaves, tokens) nos arquivos estáticos.

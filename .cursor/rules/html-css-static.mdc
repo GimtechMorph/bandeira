@@ -1,0 +1,34 @@
+---
+description: Padrões de HTML e CSS para a página estática
+globs: "**/*.html,**/*.css"
+alwaysApply: false
+---
+
+# HTML e CSS — Página estática
+
+Convenções para manter o projeto simples e compatível com GitHub Pages.
+
+## HTML
+
+- Usar `lang="pt-BR"` no `<html>` quando o conteúdo for em português.
+- Incluir `<meta charset="UTF-8">` e viewport para responsividade.
+- Preferir atributos que funcionem sem JavaScript (ex.: `alt` em imagens, fallbacks em `onerror` se necessário).
+- Manter um único `index.html` como página principal na raiz (ou na pasta de publish do GitHub Pages).
+
+## CSS
+
+- Preferir CSS no próprio HTML (tag `<style>`) ou em arquivos `.css` referenciados com caminhos relativos.
+- Usar reset básico quando fizer sentido (ex.: `box-sizing: border-box`, zerar margin/padding onde necessário).
+- Evitar dependências externas que quebrem offline; se usar CDN, ter fallback ou ser opcional.
+- Manter layout responsivo (viewport, unidades relativas, `max-width` em imagens) para funcionar em mobile.
+
+## Layout de tela inteira (ex.: check-in)
+
+- A tela deve ocupar exatamente **100vh**: usar `height: 100vh` e `overflow: hidden` no `body`.
+- **Não pode ter nenhum scroll**: é proibido usar `overflow-y: auto`, `overflow: scroll` ou qualquer barra de rolagem. Todo o conteúdo deve caber no viewport; áreas que não couberem devem usar `overflow: hidden` (o excesso fica oculto).
+- Para header fixo + área principal: `body` com `display: flex; flex-direction: column`, header com `flex-shrink: 0`, área principal com `flex: 1` e `overflow: hidden`.
+
+## Assets
+
+- Imagens e fontes em subpastas (ex.: `imagem/`). Usar nomes estáveis para não quebrar links.
+- Referenciar sempre com caminhos relativos à raiz do site (ex.: `imagem/bandeira.png`).
