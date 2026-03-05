@@ -3,34 +3,278 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bandeira</title>
+  <title>Check-in • Painel de Equipes</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0c0e12;
+      --panel: #161a22;
+      --border: #2a3142;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --success: #4ade80;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
+    body {
+      font-family: var(--font-mono);
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .conteudo {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .secao-header {
+      flex-shrink: 0;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(56, 189, 248, 0.06);
+    }
+
+    .ranking {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      background: var(--panel);
       overflow: hidden;
     }
-
-    .fullscreen-image {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      display: block;
+    .ranking .secao-header { border-right: none; }
+    .ranking-conteudo { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; }
+    .ranking-titulo {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
     }
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem 0.5rem 0.75rem;
+    }
+    .ranking-item--1 { background: rgba(230, 184, 0, 0.18); border-left: 4px solid #e6b800; padding: 0.6rem 1rem 0.6rem 0.6rem; border-radius: 4px; }
+    .ranking-item--2 { background: rgba(168, 168, 168, 0.14); border-left: 4px solid #a8a8a8; padding: 0.6rem 1rem 0.6rem 0.6rem; border-radius: 4px; }
+    .ranking-item--3 { background: rgba(205, 127, 50, 0.18); border-left: 4px solid #cd7f32; padding: 0.6rem 1rem 0.6rem 0.6rem; border-radius: 4px; }
+    .ranking-pos { font-size: 0.85rem; color: var(--muted); min-width: 1.2rem; text-align: center; }
+    .ranking-trofeu { width: 22px; height: 22px; flex-shrink: 0; display: block; }
+    .ranking-item--1 .ranking-trofeu, .ranking-item--2 .ranking-trofeu, .ranking-item--3 .ranking-trofeu { width: 32px; height: 32px; }
+    .ranking-nome { font-size: 0.8rem; font-weight: 600; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ranking-pts { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-left: 0.5rem; }
+
+    .coluna-lista {
+      flex: 2;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .coluna-lista .secao-header { border-left: none; border-right: none; }
+    .lista {
+      flex-shrink: 0;
+      overflow: hidden;
+      padding: 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .lista-item {
+      height: 75px;
+      min-height: 75px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+    }
+    .lista-item:hover { background: rgba(255,255,255,0.03); }
+    .lista-setor {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+    .lista-nome { font-weight: 600; font-size: 0.9rem; }
+    .lista-vazia { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; text-align: center; color: var(--muted); }
+
+    .regras-copa {
+      flex: 1;
+      min-height: 0;
+      margin-top: 0;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+      overflow: hidden;
+      font-size: 2rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .regras-copa h3 {
+      text-align: center;
+      font-size: 4rem;
+      color: var(--accent);
+      margin: 0.75rem 0 0.35rem 0;
+    }
+    .regras-copa h3:first-child { margin-top: 0;  }
+    .regras-copa p { margin: 0.25rem 0; }
+
   </style>
 </head>
 <body>
-  <img
-    class="fullscreen-image"
-    src="imagem/bandeira.png"
-    alt="Bandeira"
-    onerror="this.src='https://picsum.photos/1920/1080'"
-  >
+  <div class="conteudo">
+    <aside class="ranking" id="ranking">
+      <div class="secao-header">Ranking</div>
+      <div class="ranking-conteudo" id="ranking-conteudo"></div>
+    </aside>
+    <main class="coluna-lista">
+      <div class="secao-header">Check-in</div>
+      <div class="lista" id="lista"></div>
+      <section class="regras-copa" aria-label="Regras IM Copa" id="regras-copa">
+        <h3>Regras dos jogos</h3>
+        <p><strong>Cachorro-quente:</strong> A disputa acontecerá em todos em linha ao mesmo tempo após o início do cronômetro. Será disponibilizado apenas um copo plástico de água para todos os jogadores. Quem comer mais em menos tempo, ganha. Cachorro quente deverá ser comido inteiro para contar.</p>
+        <!-- Demais regras em REGRAS_IM_COPA (JSON no script) -->
+        <!-- Cartas não podem ser jogadas em montes, apenas uma de cada vez. +2 e +4 podem ser jogadas em qualquer carta de adição. Quem não gritar “Uno!” com uma carta compra 3. Após o primeiro vencedor, a disputa continua até segundo e terceiro lugar. -->
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const ORDER_EQUIPES = [
+        'Comercial Securitizadora',
+        'Tecnologia',
+        'Administrativo',
+        'Comercial Incorporadora',
+        'Controladoria',
+        'Engenharia',
+        'Marketing'
+      ];
+      const RANKING = [
+        { nome: 'Comercial Securitizadora', logo: '', pts: 25 },
+        { nome: 'Tecnologia', logo: '', pts: 18 },
+        { nome: 'Administrativo', logo: '', pts: 15 },
+        { nome: 'Comercial Incorporadora', logo: '', pts: 12 },
+        { nome: 'Controladoria', logo: '', pts: 10 },
+        { nome: 'Engenharia', logo: '', pts: 0 },
+        { nome: 'Marketing', logo: '', pts: 0 }
+      ];
+      const CHECKINS = [
+        { id: '1', nome: 'Diego', equipe: 'Comercial Securitizadora' },
+        { id: '2', nome: 'Julio', equipe: 'Comercial Incorporadora' },
+        { id: '3', nome: 'Jeferson', equipe: 'Tecnologia' },
+        { id: '4', nome: 'Agatha', equipe: 'Administrativo' },
+        { id: '5', nome: 'Gustavo', equipe: 'Engenharia' },
+        { id: '6', nome: 'Leo', equipe: 'Marketing' },
+        { id: '7', nome: 'José', equipe: 'Controladoria' }
+      ];
+      const REGRAS_IM_COPA = {
+        gerais: {
+          checkin: "Será necessário fazer um check-in em no máximo 3h antes da competição para participar de cada modalidade. Se ninguém da equipe fizer, a equipe está fora da modalidade. Gestores podem fazer check-in.",
+          rotacao: "Se o colaborador já participou de uma modalidade, ele só poderá participar novamente após todos da equipe participarem. Ele não pode participar independente da ausência dos demais no momento.",
+          juizesSorteios: "Se for necessário sortear uma equipe para ficar fora dos confrontos iniciais, a mesma não poderá ser sorteada na modalidade seguinte. Será feito um sorteio de um gestor para ser o juiz da modalidade jogada; se o gestor já foi juiz, não poderá ser novamente. Se o gestor fez o check-in, não poderá participar do sorteio.",
+          punicoes: "Se uma equipe não teve participantes em uma modalidade, na primeira vez serão descontados 3 pontos da tabela geral. Após a segunda ausência de participantes, o setor estará desclassificado da IM Copa. Se recorrerem a reclamações sem embasamento, perderão 3 pontos."
+        },
+        jogos: {
+          cachorroQuente: "A disputa acontecerá em todos em linha ao mesmo tempo após o início do cronômetro. Será disponibilizado apenas um copo plástico de água para todos os jogadores. Quem comer mais em menos tempo, ganha. Cachorro quente deverá ser comido inteiro para contar.",
+          truco: "Regras tradicionais do truco paulista. Quem infligir as regras está sujeito a perder a rodada. Esconder ou guardar cartas resulta em derrota imediata. Se no carteado algum jogador tiver número diferente de 3 cartas, passa o carteado e perde um tento. Quem receber 4 de ouros pode queimar a carta antes de ser definido o vira. Formato mata mata, 3 confrontos diretos; um sétimo setor será sorteado para não participar dos primeiros três confrontos; o vencedor da última partida joga contra o sorteado. O vencedor vai para a final.",
+          jenga: "O juiz deve ler as regras oficiais antes de começar. Disputas todos contra todos, eliminatória. Se a torre cair após qualquer toque do jogador, resulta em derrota. O jogo continua com os jogadores restantes até acabar.",
+          chopp: "Disputa em linha ao mesmo tempo após o cronômetro. Não pode derramar chopp na roupa; quem derrubar perde 5 pontos. Conteúdo no growler resulta em desclassificação. Validação da roupa e do growler pelo juiz após todos terminarem. Quem terminar primeiro, ganha.",
+          pingPong: "Mesmo formato do truco: três confrontos diretos e uma equipe sorteada fora dos confrontos iniciais. Saques cruzados; se não for, ponto do outro. Se a bolinha tocar na raquete e voltar para a quadra (mesmo após tocar na mesa), ponto do adversário. Saque com contato da mão na raquete é invalidado; após 2 tentativas, ponto do adversário. Cada jogador saca 2 vezes consecutivas; saque atrás da linha. Quem fizer 11 pontos primeiro, ganha.",
+          uno: "Disputa todos contra todos ao mesmo tempo, regras tradicionais do Uno. Cartas não podem ser jogadas em montes, apenas uma de cada vez. +2 e +4 podem ser jogadas em qualquer carta de adição. Quem não gritar Uno! com uma carta compra 3. Após o primeiro vencedor, a disputa continua até segundo e terceiro lugar.",
+          corrida: "Disputa todos contra todos ao mesmo tempo, em linha, após o cronômetro. Quem concluir primeiro, ganha. A disputa encerra após o terceiro lugar concluir. Sem meia e tênis de corrida: desclassificado. Calça jeans proibida."
+        }
+      };
+
+      var TROFEU_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><g><ellipse fill="#D8DFEA" cx="300.616" cy="554.031" rx="175.988" ry="4.969"/><path fill="#E8A615" d="M530,92.139v48.298c0,78.441-63.577,142.052-141.975,142.052h-19.877l22.063-22.757c64.769-1.165,117.073-54.235,117.073-119.295v-36.933h-85.185l2.84-22.728h93.704C524.917,80.774,530,85.86,530,92.139z"/><path fill="#E8A615" d="M373.827,419.34v25.086H226.173V419.34c0-2.045,1.107-3.949,2.896-4.943l11.188-6.307c19.365-10.909,31.348-31.393,31.348-53.639v-26.507h56.79v26.507c0,22.245,11.983,42.729,31.348,53.639l11.188,6.307C372.72,415.391,373.827,417.295,373.827,419.34z"/><path fill="#B7791D" d="M373.827,419.34v25.086H359.63V419.34c0-2.045-1.107-3.949-2.896-4.943l-11.188-6.307c-19.365-10.909-31.348-31.393-31.348-53.639v-26.507h14.198v26.507c0,22.245,11.983,42.729,31.348,53.639l11.188,6.307C372.72,415.391,373.827,417.295,373.827,419.34z"/><path fill="#E8A615" d="M345.432,305.784v16.478c0,7.841-6.36,14.205-14.198,14.205h-62.469c-7.837,0-14.198-6.364-14.198-14.205v-16.478H345.432z"/><rect x="271.605" y="336.468" fill="#B7791D" width="56.79" height="8.353"/><path fill="#343B49" d="M396.543,438.745v99.436H203.457v-99.436c0-3.125,2.556-5.682,5.679-5.682h181.728C393.988,433.063,396.543,435.62,396.543,438.745z"/><path fill="#262D38" d="M396.543,438.745v99.436h-11.358v-99.436c0-3.125-2.556-5.682-5.679-5.682h11.358C393.988,433.063,396.543,435.62,396.543,438.745z"/><path fill="#262D38" d="M413.58,535.34v11.364c0,3.125-2.556,5.682-5.679,5.682H192.099c-3.123,0-5.679-2.557-5.679-5.682V535.34c0-3.125,2.556-5.682,5.679-5.682h215.802C411.025,529.658,413.58,532.215,413.58,535.34z"/><path fill="#171C23" d="M413.58,535.34v11.364c0,3.125-2.556,5.682-5.679,5.682h-11.358c3.123,0,5.679-2.557,5.679-5.682V535.34c0-3.125-2.556-5.682-5.679-5.682h11.358C411.025,529.658,413.58,532.215,413.58,535.34z"/><path fill="#E8A615" d="M368.148,461.473v39.774c0,3.125-2.556,5.682-5.679,5.682H237.531c-3.123,0-5.679-2.557-5.679-5.682v-39.774c0-3.125,2.556-5.682,5.679-5.682h124.938C365.593,455.791,368.148,458.348,368.148,461.473z"/><path fill="#B7791D" d="M345.432,305.784v16.478c0,7.841-6.36,14.205-14.198,14.205h-11.358c7.837,0,14.198-6.364,14.198-14.205v-16.478H345.432z"/><path fill="#E8A615" d="M240.37,282.488h-28.395C133.577,282.488,70,218.877,70,140.436V92.139c0-6.279,5.083-11.364,11.358-11.364h93.704v22.728H92.716v36.933c0,65.06,52.304,118.13,117.073,119.295L240.37,282.488z"/><path fill="#E8A615" d="M439.136,58.046V69.41c0,138.074-62.299,250.011-139.136,250.011S160.864,207.485,160.864,69.41V58.046H439.136z"/><path fill="#B7791D" d="M162.142,103.503h-11.358c-0.568-7.472-0.937-15.057-1.136-22.728h11.358C161.205,88.445,161.574,96.031,162.142,103.503z"/><path fill="#B7791D" d="M227.195,282.488h-11.358c-6.332-6.989-12.352-14.887-17.946-23.581c3.919,0.483,7.865,0.739,11.898,0.824C215.241,268.112,221.062,275.726,227.195,282.488z"/><path fill="#B7791D" d="M345.432,305.784v5.682c-14.254,8.836-29.531,13.637-45.432,13.637s-31.178-4.801-45.432-13.637v-5.682c14.254,8.836,29.531,13.637,45.432,13.637S331.178,314.62,345.432,305.784z"/><path fill="#B7791D" d="M439.136,58.046V69.41c0,133.756-58.466,242.994-131.98,249.699c71.442-6.79,97.906-115.999,97.906-249.699V58.046H439.136z"/><path fill="#E8A615" d="M453.333,55.205c0,3.921-1.59,7.472-4.146,10.057c-2.584,2.557-6.133,4.148-10.052,4.148H160.864c-7.837,0-14.198-6.364-14.198-14.205c0-3.921,1.59-7.472,4.146-10.057c2.584-2.557,6.133-4.148,10.052-4.148h278.272C446.973,41,453.333,47.364,453.333,55.205z"/><path fill="#B7791D" d="M439.136,69.41c0,3.807-0.057,7.586-0.142,11.364H161.006c-0.085-3.779-0.142-7.557-0.142-11.364H439.136z"/><path fill="#B7791D" d="M453.333,55.205c0,3.921-1.59,7.472-4.146,10.057c-2.584,2.557-6.133,4.148-10.052,4.148h-31.235c3.919,0,7.468-1.591,10.052-4.148c2.556-2.585,4.146-6.137,4.146-10.057c0-7.841-6.36-14.205-14.198-14.205h31.235C446.973,41,453.333,47.364,453.333,55.205z"/><path fill="#B7791D" d="M368.148,461.473v39.774c0,3.125-2.556,5.682-5.679,5.682H249.741c22.943-0.455,98.531-5.341,98.531-51.139h14.198C365.593,455.791,368.148,458.348,368.148,461.473z"/><path fill="#FFCC66" d="M237.531,487.042v-23.245c0-1.284,1.04-2.324,2.323-2.324h50.918C290.772,461.473,250.309,465.735,237.531,487.042z"/><path fill="#4E5868" d="M209.846,464.314v-23.245c0-1.284,1.04-2.324,2.323-2.324h50.918C263.086,438.745,222.623,443.006,209.846,464.314z"/><path fill="#FFCC66" d="M300,310.898c-30.837,0-116.363-65.088-126.727-218.76h33.733C215.496,280.158,300,310.898,300,310.898z"/><path fill="#FFCC66" d="M240.37,421.699c0,0,39.753-25.569,39.753-62.503v62.503H240.37z"/><path fill="#FFCC66" d="M166.543,46.682v8.523h-14.198c0-4.688,3.805-8.523,8.519-8.523H166.543z"/><path fill="#B7791D" d="M447.512,80.774c-0.199,7.671-0.568,15.256-1.164,22.728h-24.249l2.84-22.728H447.512z"/><path fill="#B7791D" d="M399.07,259.248c-5.565,8.551-11.5,16.336-17.747,23.24h-13.175l10.052-10.341l12.011-12.415C393.193,259.674,396.146,259.504,399.07,259.248z"/></g></svg>';
+      function trofeuSvg(place) {
+        var svg = TROFEU_SVG;
+        if (place === 1) { /* ouro - original */ }
+        else if (place === 2) {
+          svg = svg.replace(/#E8A615/g, '#A8A8A8').replace(/#B7791D/g, '#787878').replace(/#FFCC66/g, '#C8C8C8');
+        } else if (place === 3) {
+          svg = svg.replace(/#E8A615/g, '#CD7F32').replace(/#B7791D/g, '#8B4513').replace(/#FFCC66/g, '#D2691E');
+        }
+        return 'data:image/svg+xml,' + encodeURIComponent(svg);
+      }
+
+      function renderRanking() {
+        var ranking = RANKING.slice();
+        var porNome = {};
+        ranking.forEach(function (r) { porNome[r.nome] = r; });
+        var ordenado = ORDER_EQUIPES.map(function (eq) { return porNome[eq] || { nome: eq, logo: '', pts: 0 }; });
+        var el = document.getElementById('ranking-conteudo');
+        el.innerHTML = '';
+        ordenado.forEach(function (r, i) {
+          var posHtml = i < 3
+            ? '<img class="ranking-trofeu" src="' + trofeuSvg(i + 1) + '" alt="' + (i + 1) + 'º" title="' + (i + 1) + 'º lugar">'
+            : '<span class="ranking-pos">' + (i + 1) + '</span>';
+          var row = document.createElement('div');
+          row.className = 'ranking-item' + (i < 3 ? ' ranking-item--' + (i + 1) : '');
+          row.innerHTML =
+            posHtml +
+            '<span class="ranking-nome" title="' + escapeHtml(r.nome) + '">' + escapeHtml(r.nome) + '</span>' +
+            '<span class="ranking-pts">' + (r.pts != null ? r.pts : 0) + ' pts</span>';
+          el.appendChild(row);
+        });
+      }
+
+      function render() {
+        const checkins = CHECKINS.slice();
+        const lista = document.getElementById('lista');
+        lista.innerHTML = '';
+
+        var porEquipe = {};
+        checkins.forEach(function (c) {
+          if (!porEquipe[c.equipe]) porEquipe[c.equipe] = c;
+        });
+        var unicos = Object.keys(porEquipe).map(function (eq) { return porEquipe[eq]; });
+
+        if (unicos.length === 0) {
+          lista.innerHTML = '<div class="lista-vazia">Nenhum check-in.</div>';
+          return;
+        }
+
+        unicos.forEach(function (c) {
+          const row = document.createElement('div');
+          row.className = 'lista-item';
+          row.innerHTML =
+            '<span class="lista-setor">' + escapeHtml(c.equipe) + '</span>' +
+            '<span class="lista-nome">' + escapeHtml(c.nome) + '</span>';
+          lista.appendChild(row);
+        });
+      }
+
+      function escapeHtml(s) {
+        if (!s) return '';
+        const div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+
+      renderRanking();
+      render();
+    })();
+  </script>
 </body>
 </html>
