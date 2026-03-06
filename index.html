@@ -176,9 +176,11 @@
 
       function renderRanking() {
         var ranking = RANKING.slice();
-        var porNome = {};
-        ranking.forEach(function (r) { porNome[r.nome] = r; });
-        var ordenado = ORDER_EQUIPES.map(function (eq) { return porNome[eq] || { nome: eq, logo: '', pts: 0 }; });
+        var ordenado = ranking.sort(function (a, b) {
+          var ptsA = a.pts != null ? a.pts : 0;
+          var ptsB = b.pts != null ? b.pts : 0;
+          return ptsB - ptsA;
+        });
         var el = document.getElementById('ranking-conteudo');
         el.innerHTML = '';
         ordenado.forEach(function (r, i) {
@@ -232,7 +234,8 @@
       render();
 
       setInterval(function () {
-        location.reload();
+        renderRanking();
+        render();
       }, 5000);
     })();
   </script>
