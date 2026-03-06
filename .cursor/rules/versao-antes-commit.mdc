@@ -1,0 +1,29 @@
+---
+description: Antes de commitar, a versão do app deve ser atualizada em index.html
+globs: index.html
+alwaysApply: true
+---
+
+# Versão antes do commit
+
+Toda alteração que for commitada deve ter a **versão do app atualizada** antes do commit.
+
+## Onde atualizar
+
+No arquivo `index.html`, localize a constante:
+
+```javascript
+const APP_VERSION = '1.0.0';
+```
+
+Atualize o valor conforme o tipo de mudança (recomenda-se SemVer):
+
+- **PATCH** (ex.: `1.0.1`): correções de bug, ajustes pequenos
+- **MINOR** (ex.: `1.1.0`): novas funcionalidades sem quebrar compatibilidade
+- **MAJOR** (ex.: `2.0.0`): mudanças que quebram compatibilidade
+
+## Checklist antes do commit
+
+- [ ] Código alterado conforme necessário
+- [ ] `APP_VERSION` em `index.html` atualizada
+- [ ] Commit com mensagem em Conventional Commits
